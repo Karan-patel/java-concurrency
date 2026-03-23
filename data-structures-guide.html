@@ -1,0 +1,1480 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Data Structures: Deep Fundamental Understanding</title>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Crimson+Pro:wght@400;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #1a1a2e;
+            --secondary: #16213e;
+            --accent: #0f3460;
+            --highlight: #e94560;
+            --text: #e8e8e8;
+            --text-dim: #a8a8a8;
+            --card-bg: #242438;
+            --success: #2ecc71;
+            --warning: #f39c12;
+            --danger: #e74c3c;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Crimson Pro', serif;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            color: var(--text);
+            line-height: 1.8;
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 40px 20px;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 80px;
+            padding: 60px 20px;
+            background: rgba(255, 255, 255, 0.02);
+            border-radius: 20px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        h1 {
+            font-family: 'Space Mono', monospace;
+            font-size: 3.5em;
+            font-weight: 700;
+            margin-bottom: 20px;
+            background: linear-gradient(135deg, var(--highlight), #ff6b9d);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            letter-spacing: -2px;
+        }
+
+        .subtitle {
+            font-size: 1.3em;
+            color: var(--text-dim);
+            max-width: 800px;
+            margin: 0 auto;
+            line-height: 1.6;
+        }
+
+        .ds-card {
+            background: var(--card-bg);
+            border-radius: 16px;
+            padding: 40px;
+            margin-bottom: 40px;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .ds-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, var(--highlight), #ff6b9d);
+        }
+
+        .ds-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+        }
+
+        h2 {
+            font-family: 'Space Mono', monospace;
+            font-size: 2.2em;
+            margin-bottom: 10px;
+            color: var(--highlight);
+        }
+
+        .ds-type {
+            font-size: 0.9em;
+            color: var(--text-dim);
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            margin-bottom: 20px;
+            font-family: 'Space Mono', monospace;
+        }
+
+        .core-concept {
+            background: rgba(233, 69, 96, 0.1);
+            border-left: 4px solid var(--highlight);
+            padding: 20px;
+            margin: 25px 0;
+            border-radius: 8px;
+        }
+
+        .core-concept h3 {
+            color: var(--highlight);
+            margin-bottom: 10px;
+            font-size: 1.3em;
+        }
+
+        .mental-model {
+            background: rgba(46, 204, 113, 0.1);
+            border-left: 4px solid var(--success);
+            padding: 20px;
+            margin: 25px 0;
+            border-radius: 8px;
+            font-style: italic;
+        }
+
+        .section {
+            margin: 30px 0;
+        }
+
+        .section h4 {
+            color: var(--highlight);
+            font-size: 1.4em;
+            margin-bottom: 15px;
+            font-family: 'Space Mono', monospace;
+        }
+
+        .complexity-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin: 20px 0;
+        }
+
+        .complexity-item {
+            background: var(--accent);
+            padding: 15px;
+            border-radius: 8px;
+            text-align: center;
+        }
+
+        .complexity-label {
+            font-size: 0.9em;
+            color: var(--text-dim);
+            margin-bottom: 5px;
+            font-family: 'Space Mono', monospace;
+        }
+
+        .complexity-value {
+            font-size: 1.2em;
+            font-weight: 700;
+            color: var(--highlight);
+            font-family: 'Space Mono', monospace;
+        }
+
+        .pros-cons {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            margin: 25px 0;
+        }
+
+        @media (max-width: 768px) {
+            .pros-cons {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .pros, .cons {
+            padding: 20px;
+            border-radius: 8px;
+        }
+
+        .pros {
+            background: rgba(46, 204, 113, 0.1);
+            border-left: 4px solid var(--success);
+        }
+
+        .cons {
+            background: rgba(231, 76, 60, 0.1);
+            border-left: 4px solid var(--danger);
+        }
+
+        .pros h5, .cons h5 {
+            margin-bottom: 15px;
+            font-size: 1.2em;
+            font-family: 'Space Mono', monospace;
+        }
+
+        .pros h5 {
+            color: var(--success);
+        }
+
+        .cons h5 {
+            color: var(--danger);
+        }
+
+        ul {
+            list-style: none;
+            padding-left: 0;
+        }
+
+        li {
+            padding: 8px 0;
+            padding-left: 25px;
+            position: relative;
+        }
+
+        .pros li::before {
+            content: "✓";
+            position: absolute;
+            left: 0;
+            color: var(--success);
+            font-weight: bold;
+        }
+
+        .cons li::before {
+            content: "✗";
+            position: absolute;
+            left: 0;
+            color: var(--danger);
+            font-weight: bold;
+        }
+
+        .use-cases {
+            background: rgba(243, 156, 18, 0.1);
+            padding: 20px;
+            border-radius: 8px;
+            border-left: 4px solid var(--warning);
+        }
+
+        .use-cases h5 {
+            color: var(--warning);
+            margin-bottom: 15px;
+            font-size: 1.2em;
+            font-family: 'Space Mono', monospace;
+        }
+
+        .use-case-item {
+            margin: 10px 0;
+            padding: 10px;
+            background: rgba(255, 255, 255, 0.03);
+            border-radius: 6px;
+        }
+
+        .use-case-title {
+            font-weight: 700;
+            color: var(--warning);
+        }
+
+        code {
+            background: rgba(0, 0, 0, 0.3);
+            padding: 2px 8px;
+            border-radius: 4px;
+            font-family: 'Space Mono', monospace;
+            font-size: 0.9em;
+            color: #ff6b9d;
+        }
+
+        .comparison-table {
+            background: var(--accent);
+            padding: 20px;
+            border-radius: 8px;
+            margin: 30px 0;
+            overflow-x: auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        th, td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        th {
+            font-family: 'Space Mono', monospace;
+            color: var(--highlight);
+            font-weight: 700;
+        }
+
+        .key-insight {
+            background: linear-gradient(135deg, rgba(233, 69, 96, 0.2), rgba(255, 107, 157, 0.2));
+            padding: 25px;
+            border-radius: 12px;
+            margin: 30px 0;
+            border: 2px solid var(--highlight);
+        }
+
+        .key-insight h4 {
+            color: var(--highlight);
+            margin-bottom: 15px;
+            font-size: 1.3em;
+        }
+
+        .visual-rep {
+            background: rgba(0, 0, 0, 0.3);
+            padding: 30px;
+            border-radius: 12px;
+            margin: 25px 0;
+            text-align: center;
+            font-family: 'Space Mono', monospace;
+            font-size: 1.1em;
+            line-height: 2;
+            overflow-x: auto;
+        }
+
+        .toc {
+            background: var(--card-bg);
+            padding: 30px;
+            border-radius: 16px;
+            margin-bottom: 50px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .toc h3 {
+            font-family: 'Space Mono', monospace;
+            color: var(--highlight);
+            margin-bottom: 20px;
+            font-size: 1.5em;
+        }
+
+        .toc-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 15px;
+        }
+
+        .toc-item {
+            background: var(--accent);
+            padding: 15px;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .toc-item:hover {
+            background: var(--highlight);
+            transform: translateX(5px);
+        }
+
+        .toc-item a {
+            color: var(--text);
+            text-decoration: none;
+            font-family: 'Space Mono', monospace;
+        }
+
+        footer {
+            text-align: center;
+            padding: 40px;
+            margin-top: 80px;
+            color: var(--text-dim);
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .badge {
+            display: inline-block;
+            padding: 5px 12px;
+            border-radius: 20px;
+            font-size: 0.85em;
+            font-family: 'Space Mono', monospace;
+            margin-right: 10px;
+            margin-bottom: 10px;
+        }
+
+        .badge-linear { background: rgba(46, 204, 113, 0.2); color: var(--success); }
+        .badge-sequential { background: rgba(52, 152, 219, 0.2); color: #3498db; }
+        .badge-hierarchical { background: rgba(155, 89, 182, 0.2); color: #9b59b6; }
+        .badge-hash { background: rgba(241, 196, 15, 0.2); color: #f1c40f; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Data Structures</h1>
+            <p class="subtitle">A deep, fundamental understanding of how data is organized, accessed, and manipulated. Master the DNA of efficient algorithms.</p>
+        </header>
+
+        <div class="toc">
+            <h3>📚 Navigation</h3>
+            <div class="toc-grid">
+                <div class="toc-item"><a href="#array">Array</a></div>
+                <div class="toc-item"><a href="#linked-list">Linked List</a></div>
+                <div class="toc-item"><a href="#stack">Stack</a></div>
+                <div class="toc-item"><a href="#queue">Queue</a></div>
+                <div class="toc-item"><a href="#hash-table">Hash Table</a></div>
+                <div class="toc-item"><a href="#tree">Tree</a></div>
+                <div class="toc-item"><a href="#heap">Heap</a></div>
+                <div class="toc-item"><a href="#graph">Graph</a></div>
+                <div class="toc-item"><a href="#trie">Trie</a></div>
+            </div>
+        </div>
+
+        <!-- ARRAY -->
+        <div class="ds-card" id="array">
+            <div class="ds-type"><span class="badge badge-linear">Linear</span><span class="badge badge-sequential">Sequential</span></div>
+            <h2>Array</h2>
+            
+            <div class="core-concept">
+                <h3>🧬 Core DNA</h3>
+                <p><strong>Array is a contiguous block of memory divided into equal-sized slots</strong>, where each slot is identified by an index. Think of it as a row of numbered lockers, each exactly the same size, lined up next to each other with no gaps.</p>
+            </div>
+
+            <div class="mental-model">
+                <strong>Mental Model:</strong> A parking lot with numbered spaces. Each space is the same size, you know exactly where space #5 is (5 spots from the start), and you can drive directly to it. But you can't easily add more spaces in the middle without moving all cars after it.
+            </div>
+
+            <div class="visual-rep">
+                [0] [1] [2] [3] [4] [5]<br>
+                 A   B   C   D   E   F<br>
+                Memory: →→→→→→ (continuous)
+            </div>
+
+            <div class="section">
+                <h4>⏱️ Time & Space Complexity</h4>
+                <div class="complexity-grid">
+                    <div class="complexity-item">
+                        <div class="complexity-label">Access</div>
+                        <div class="complexity-value">O(1)</div>
+                    </div>
+                    <div class="complexity-item">
+                        <div class="complexity-label">Search</div>
+                        <div class="complexity-value">O(n)</div>
+                    </div>
+                    <div class="complexity-item">
+                        <div class="complexity-label">Insert (end)</div>
+                        <div class="complexity-value">O(1)*</div>
+                    </div>
+                    <div class="complexity-item">
+                        <div class="complexity-label">Insert (middle)</div>
+                        <div class="complexity-value">O(n)</div>
+                    </div>
+                    <div class="complexity-item">
+                        <div class="complexity-label">Delete</div>
+                        <div class="complexity-value">O(n)</div>
+                    </div>
+                    <div class="complexity-item">
+                        <div class="complexity-label">Space</div>
+                        <div class="complexity-value">O(n)</div>
+                    </div>
+                </div>
+                <p style="margin-top: 15px; color: var(--text-dim);">* O(1) amortized if dynamic array with capacity management</p>
+            </div>
+
+            <div class="pros-cons">
+                <div class="pros">
+                    <h5>✓ Strengths</h5>
+                    <ul>
+                        <li><strong>Lightning-fast random access</strong> - Get any element in constant time using index</li>
+                        <li><strong>Cache-friendly</strong> - Contiguous memory = CPU cache loves it</li>
+                        <li><strong>Memory efficient</strong> - No extra pointers, just raw data</li>
+                        <li><strong>Simple and universal</strong> - Every language has arrays built-in</li>
+                        <li><strong>Predictable memory layout</strong> - Easy to reason about and debug</li>
+                    </ul>
+                </div>
+                <div class="cons">
+                    <h5>✗ Limitations</h5>
+                    <ul>
+                        <li><strong>Fixed size</strong> - Once created, size is fixed (unless dynamic array with reallocation)</li>
+                        <li><strong>Expensive insertions/deletions</strong> - Must shift all elements after the position</li>
+                        <li><strong>Contiguous memory required</strong> - Large arrays need one big continuous block</li>
+                        <li><strong>Wasted space</strong> - Dynamic arrays often over-allocate to avoid frequent resizing</li>
+                        <li><strong>Not suitable for frequent modifications</strong> - Middle insertions/deletions kill performance</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="use-cases">
+                <h5>🎯 When to Use</h5>
+                <div class="use-case-item">
+                    <span class="use-case-title">Known, fixed-size collections:</span> Days of week, RGB color values, matrix operations
+                </div>
+                <div class="use-case-item">
+                    <span class="use-case-title">Frequent random access:</span> Looking up elements by index constantly (game board, pixel data)
+                </div>
+                <div class="use-case-item">
+                    <span class="use-case-title">Sequential processing:</span> Iterating through all elements in order
+                </div>
+                <div class="use-case-item">
+                    <span class="use-case-title">Performance-critical code:</span> Sorting algorithms, numerical computations where cache locality matters
+                </div>
+                <div class="use-case-item">
+                    <span class="use-case-title">Buffer implementations:</span> Circular buffers, string buffers, I/O buffers
+                </div>
+            </div>
+
+            <div class="key-insight">
+                <h4>💡 Key Insight</h4>
+                <p>Arrays are the <strong>foundation of computing</strong>. Their power comes from mathematics: <code>address = base + (index × element_size)</code>. This simple formula enables O(1) access. The tradeoff is rigidity - that contiguous memory that makes them fast also makes them inflexible. Use arrays when you know the size and need speed; avoid when you need frequent insertions/deletions in the middle.</p>
+            </div>
+        </div>
+
+        <!-- LINKED LIST -->
+        <div class="ds-card" id="linked-list">
+            <div class="ds-type"><span class="badge badge-linear">Linear</span><span class="badge badge-sequential">Sequential</span></div>
+            <h2>Linked List</h2>
+            
+            <div class="core-concept">
+                <h3>🧬 Core DNA</h3>
+                <p><strong>A linked list is a chain of nodes scattered in memory, where each node contains data and a pointer to the next node.</strong> Like a treasure hunt where each clue tells you where the next clue is hidden. There's no indexing magic - you must follow the chain.</p>
+            </div>
+
+            <div class="mental-model">
+                <strong>Mental Model:</strong> A train where each car (node) carries cargo (data) and a coupling (pointer) that connects to the next car. To get to car #10, you must walk through cars 1-9. But you can easily insert a new car anywhere or detach cars by just changing couplings.
+            </div>
+
+            <div class="visual-rep">
+                [A|→] → [B|→] → [C|→] → [D|→] → NULL<br>
+                Memory: scattered, not continuous<br>
+                Each node: {data, next pointer}
+            </div>
+
+            <div class="section">
+                <h4>⏱️ Time & Space Complexity</h4>
+                <div class="complexity-grid">
+                    <div class="complexity-item">
+                        <div class="complexity-label">Access</div>
+                        <div class="complexity-value">O(n)</div>
+                    </div>
+                    <div class="complexity-item">
+                        <div class="complexity-label">Search</div>
+                        <div class="complexity-value">O(n)</div>
+                    </div>
+                    <div class="complexity-item">
+                        <div class="complexity-label">Insert (head)</div>
+                        <div class="complexity-value">O(1)</div>
+                    </div>
+                    <div class="complexity-item">
+                        <div class="complexity-label">Insert (middle)</div>
+                        <div class="complexity-value">O(n)</div>
+                    </div>
+                    <div class="complexity-item">
+                        <div class="complexity-label">Delete (known node)</div>
+                        <div class="complexity-value">O(1)</div>
+                    </div>
+                    <div class="complexity-item">
+                        <div class="complexity-label">Space</div>
+                        <div class="complexity-value">O(n)</div>
+                    </div>
+                </div>
+                <p style="margin-top: 15px; color: var(--text-dim);">Note: Each node needs extra space for pointer(s)</p>
+            </div>
+
+            <div class="pros-cons">
+                <div class="pros">
+                    <h5>✓ Strengths</h5>
+                    <ul>
+                        <li><strong>Dynamic size</strong> - Grows and shrinks easily, no reallocation needed</li>
+                        <li><strong>Efficient insertions/deletions</strong> - O(1) at head, or when you have the node reference</li>
+                        <li><strong>No memory waste</strong> - Uses exactly what you need (plus pointer overhead)</li>
+                        <li><strong>No contiguous memory needed</strong> - Can use fragmented memory spaces</li>
+                        <li><strong>Easy restructuring</strong> - Can rearrange nodes by just changing pointers</li>
+                    </ul>
+                </div>
+                <div class="cons">
+                    <h5>✗ Limitations</h5>
+                    <ul>
+                        <li><strong>Slow random access</strong> - Must traverse from head to reach any element</li>
+                        <li><strong>Extra memory for pointers</strong> - Each node needs additional space for next (and prev in doubly-linked)</li>
+                        <li><strong>Cache-unfriendly</strong> - Nodes scattered in memory = poor cache locality</li>
+                        <li><strong>No backward traversal</strong> - In singly-linked list, can't go backwards</li>
+                        <li><strong>More complex</strong> - Pointer management, edge cases (null checks, head/tail)</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="use-cases">
+                <h5>🎯 When to Use</h5>
+                <div class="use-case-item">
+                    <span class="use-case-title">Frequent insertions/deletions:</span> Task lists where items are constantly added/removed
+                </div>
+                <div class="use-case-item">
+                    <span class="use-case-title">Unknown size:</span> When you don't know how many elements you'll have
+                </div>
+                <div class="use-case-item">
+                    <span class="use-case-title">Implementation of other structures:</span> Base for stacks, queues, hash table chaining
+                </div>
+                <div class="use-case-item">
+                    <span class="use-case-title">Undo functionality:</span> Browser history, text editor undo/redo
+                </div>
+                <div class="use-case-item">
+                    <span class="use-case-title">Music/video playlists:</span> Where next/previous navigation and insertion are common
+                </div>
+            </div>
+
+            <div class="key-insight">
+                <h4>💡 Key Insight</h4>
+                <p>Linked lists trade <strong>access speed for modification flexibility</strong>. While arrays excel at "I need element #5", linked lists excel at "insert this new element here" or "remove this element". The fundamental difference: arrays use <strong>arithmetic</strong> (calculate address), linked lists use <strong>references</strong> (follow pointers). Choose based on your primary operation pattern.</p>
+            </div>
+        </div>
+
+        <!-- STACK -->
+        <div class="ds-card" id="stack">
+            <div class="ds-type"><span class="badge badge-linear">Linear</span><span class="badge badge-sequential">LIFO</span></div>
+            <h2>Stack</h2>
+            
+            <div class="core-concept">
+                <h3>🧬 Core DNA</h3>
+                <p><strong>A stack is a LIFO (Last In, First Out) structure - like a stack of plates.</strong> You can only add or remove from the top. The most recent item added is the first one to be removed. It's a restricted access data structure with only two main operations: push (add to top) and pop (remove from top).</p>
+            </div>
+
+            <div class="mental-model">
+                <strong>Mental Model:</strong> A stack of books or a cafeteria tray dispenser. You add new books on top, and when you need one, you take from the top. You can't grab the bottom book without removing all the ones above it. Last one you placed is the first one you'll pick up.
+            </div>
+
+            <div class="visual-rep">
+                     ┌───┐<br>
+                 TOP │ C │ ← push/pop here<br>
+                     ├───┤<br>
+                     │ B │<br>
+                     ├───┤<br>
+                     │ A │<br>
+                     └───┘<br>
+                LIFO: C → B → A
+            </div>
+
+            <div class="section">
+                <h4>⏱️ Time & Space Complexity</h4>
+                <div class="complexity-grid">
+                    <div class="complexity-item">
+                        <div class="complexity-label">Push</div>
+                        <div class="complexity-value">O(1)</div>
+                    </div>
+                    <div class="complexity-item">
+                        <div class="complexity-label">Pop</div>
+                        <div class="complexity-value">O(1)</div>
+                    </div>
+                    <div class="complexity-item">
+                        <div class="complexity-label">Peek/Top</div>
+                        <div class="complexity-value">O(1)</div>
+                    </div>
+                    <div class="complexity-item">
+                        <div class="complexity-label">Search</div>
+                        <div class="complexity-value">O(n)</div>
+                    </div>
+                    <div class="complexity-item">
+                        <div class="complexity-label">Space</div>
+                        <div class="complexity-value">O(n)</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="pros-cons">
+                <div class="pros">
+                    <h5>✓ Strengths</h5>
+                    <ul>
+                        <li><strong>Simple and intuitive</strong> - Easy to understand and implement</li>
+                        <li><strong>Constant-time operations</strong> - All primary operations are O(1)</li>
+                        <li><strong>Memory efficient</strong> - Can be implemented with array or linked list efficiently</li>
+                        <li><strong>Natural for recursion</strong> - Models the call stack perfectly</li>
+                        <li><strong>Useful for backtracking</strong> - Naturally supports undo operations</li>
+                    </ul>
+                </div>
+                <div class="cons">
+                    <h5>✗ Limitations</h5>
+                    <ul>
+                        <li><strong>No random access</strong> - Can't access middle elements without popping</li>
+                        <li><strong>Limited operations</strong> - Only push, pop, peek - very restricted</li>
+                        <li><strong>Fixed order</strong> - LIFO only, can't process oldest first</li>
+                        <li><strong>Stack overflow risk</strong> - Limited size in fixed implementations</li>
+                        <li><strong>Not suitable for most collections</strong> - Too restrictive for general-purpose use</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="use-cases">
+                <h5>🎯 When to Use</h5>
+                <div class="use-case-item">
+                    <span class="use-case-title">Function call management:</span> Every program uses call stack for function invocation
+                </div>
+                <div class="use-case-item">
+                    <span class="use-case-title">Expression evaluation:</span> Converting infix to postfix, evaluating mathematical expressions
+                </div>
+                <div class="use-case-item">
+                    <span class="use-case-title">Undo mechanisms:</span> Text editors, photo editing software - track operations in reverse order
+                </div>
+                <div class="use-case-item">
+                    <span class="use-case-title">Browser history:</span> Back button navigation (though modern browsers use more complex structures)
+                </div>
+                <div class="use-case-item">
+                    <span class="use-case-title">Syntax parsing:</span> Checking balanced parentheses, XML/HTML tag matching
+                </div>
+                <div class="use-case-item">
+                    <span class="use-case-title">Backtracking algorithms:</span> DFS traversal, maze solving, puzzle solving
+                </div>
+            </div>
+
+            <div class="key-insight">
+                <h4>💡 Key Insight</h4>
+                <p>Stacks are the <strong>essence of "most recent first"</strong>. They're not a general-purpose structure - they're a specialized tool for specific patterns. The restriction (LIFO only) is actually their power: it enforces a discipline that naturally fits problems involving reversal, backtracking, or nested structures. When you see recursion, think stack. When you need undo, think stack.</p>
+            </div>
+        </div>
+
+        <!-- QUEUE -->
+        <div class="ds-card" id="queue">
+            <div class="ds-type"><span class="badge badge-linear">Linear</span><span class="badge badge-sequential">FIFO</span></div>
+            <h2>Queue</h2>
+            
+            <div class="core-concept">
+                <h3>🧬 Core DNA</h3>
+                <p><strong>A queue is a FIFO (First In, First Out) structure - like a line at a ticket counter.</strong> You add at the back (enqueue) and remove from the front (dequeue). The oldest item is served first. It's a fair, ordered structure where everyone waits their turn.</p>
+            </div>
+
+            <div class="mental-model">
+                <strong>Mental Model:</strong> A checkout line at a grocery store. First person to arrive is first to be served. New people join at the back. No cutting in line! The person at the front has been waiting longest and gets served first. Fair and orderly.
+            </div>
+
+            <div class="visual-rep">
+                FRONT ← [A][B][C][D] ← REAR<br>
+                       dequeue        enqueue<br>
+                       ↓              ↓<br>
+                FIFO: A → B → C → D
+            </div>
+
+            <div class="section">
+                <h4>⏱️ Time & Space Complexity</h4>
+                <div class="complexity-grid">
+                    <div class="complexity-item">
+                        <div class="complexity-label">Enqueue</div>
+                        <div class="complexity-value">O(1)</div>
+                    </div>
+                    <div class="complexity-item">
+                        <div class="complexity-label">Dequeue</div>
+                        <div class="complexity-value">O(1)</div>
+                    </div>
+                    <div class="complexity-item">
+                        <div class="complexity-label">Peek/Front</div>
+                        <div class="complexity-value">O(1)</div>
+                    </div>
+                    <div class="complexity-item">
+                        <div class="complexity-label">Search</div>
+                        <div class="complexity-value">O(n)</div>
+                    </div>
+                    <div class="complexity-item">
+                        <div class="complexity-label">Space</div>
+                        <div class="complexity-value">O(n)</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="pros-cons">
+                <div class="pros">
+                    <h5>✓ Strengths</h5>
+                    <ul>
+                        <li><strong>Fair ordering</strong> - First come, first served - no priority jumping</li>
+                        <li><strong>Constant-time operations</strong> - Enqueue and dequeue both O(1)</li>
+                        <li><strong>Predictable behavior</strong> - Order is maintained, no surprises</li>
+                        <li><strong>Natural for scheduling</strong> - Models real-world waiting scenarios</li>
+                        <li><strong>Simple to implement</strong> - Can use array (circular) or linked list</li>
+                    </ul>
+                </div>
+                <div class="cons">
+                    <h5>✗ Limitations</h5>
+                    <ul>
+                        <li><strong>No random access</strong> - Can't access middle elements</li>
+                        <li><strong>Limited operations</strong> - Only enqueue, dequeue, peek</li>
+                        <li><strong>No priority</strong> - Can't handle urgent items (need priority queue)</li>
+                        <li><strong>Implementation choice matters</strong> - Array-based can waste space, linked list uses extra memory</li>
+                        <li><strong>Order strictly enforced</strong> - Can't reorder or reorganize once queued</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="use-cases">
+                <h5>🎯 When to Use</h5>
+                <div class="use-case-item">
+                    <span class="use-case-title">Task scheduling:</span> CPU process scheduling, print job queue, task queues in systems
+                </div>
+                <div class="use-case-item">
+                    <span class="use-case-title">BFS traversal:</span> Breadth-first search in graphs and trees - level-by-level exploration
+                </div>
+                <div class="use-case-item">
+                    <span class="use-case-title">Message systems:</span> Message queues, event handling, asynchronous processing
+                </div>
+                <div class="use-case-item">
+                    <span class="use-case-title">Buffer management:</span> I/O buffers, streaming data, keyboard buffer
+                </div>
+                <div class="use-case-item">
+                    <span class="use-case-title">Request handling:</span> Web server request queue, API rate limiting
+                </div>
+                <div class="use-case-item">
+                    <span class="use-case-title">Simulation:</span> Modeling real-world queues (bank, restaurant, call center)
+                </div>
+            </div>
+
+            <div class="key-insight">
+                <h4>💡 Key Insight</h4>
+                <p>Queues embody <strong>fairness through ordering</strong>. Unlike stacks (LIFO = most recent first), queues are FIFO = oldest first. This simple principle makes them perfect for any scenario where order matters and fairness is desired. The key distinction from stack: stack is about <em>reversal</em> (recursive unwinding), queue is about <em>preservation of order</em> (process in arrival sequence).</p>
+            </div>
+        </div>
+
+        <!-- HASH TABLE -->
+        <div class="ds-card" id="hash-table">
+            <div class="ds-type"><span class="badge badge-hash">Associative</span></div>
+            <h2>Hash Table (Hash Map)</h2>
+            
+            <div class="core-concept">
+                <h3>🧬 Core DNA</h3>
+                <p><strong>A hash table uses a hash function to map keys to array indices, enabling near-instant lookups.</strong> It's magic: give it a key (any data type), the hash function converts it to an array index, and boom - direct access. Like a library catalog that instantly tells you the exact shelf where your book sits.</p>
+            </div>
+
+            <div class="mental-model">
+                <strong>Mental Model:</strong> A library with a magical librarian. You give the librarian a book title, they instantly compute which shelf it's on (hash function), and point you directly there. No searching through every shelf. The magic is in the hash function that converts any title into a shelf number.
+            </div>
+
+            <div class="visual-rep">
+                Key → HASH FUNCTION → Index<br>
+                <br>
+                "John" → hash() → 3<br>
+                "Mary" → hash() → 7<br>
+                "Bob" → hash() → 3 (collision!)<br>
+                <br>
+                [0] → null<br>
+                [1] → null<br>
+                [2] → null<br>
+                [3] → "John"→"Bob" (chain)<br>
+                [4] → null<br>
+                ...
+            </div>
+
+            <div class="section">
+                <h4>⏱️ Time & Space Complexity</h4>
+                <div class="complexity-grid">
+                    <div class="complexity-item">
+                        <div class="complexity-label">Insert</div>
+                        <div class="complexity-value">O(1) avg</div>
+                    </div>
+                    <div class="complexity-item">
+                        <div class="complexity-label">Search</div>
+                        <div class="complexity-value">O(1) avg</div>
+                    </div>
+                    <div class="complexity-item">
+                        <div class="complexity-label">Delete</div>
+                        <div class="complexity-value">O(1) avg</div>
+                    </div>
+                    <div class="complexity-item">
+                        <div class="complexity-label">Worst Case</div>
+                        <div class="complexity-value">O(n)</div>
+                    </div>
+                    <div class="complexity-item">
+                        <div class="complexity-label">Space</div>
+                        <div class="complexity-value">O(n)</div>
+                    </div>
+                </div>
+                <p style="margin-top: 15px; color: var(--text-dim);">Worst case O(n) occurs with many collisions or poor hash function</p>
+            </div>
+
+            <div class="pros-cons">
+                <div class="pros">
+                    <h5>✓ Strengths</h5>
+                    <ul>
+                        <li><strong>Lightning-fast lookups</strong> - Average O(1) for insert, search, delete</li>
+                        <li><strong>Key-value pairs</strong> - Natural for dictionaries, maps, caches</li>
+                        <li><strong>Flexible keys</strong> - Can use strings, objects, or any hashable type as keys</li>
+                        <li><strong>Excellent for counting/frequency</strong> - Track occurrences, build histograms</li>
+                        <li><strong>Deduplication</strong> - Automatically handles unique keys</li>
+                    </ul>
+                </div>
+                <div class="cons">
+                    <h5>✗ Limitations</h5>
+                    <ul>
+                        <li><strong>No ordering</strong> - Elements are not stored in any particular order</li>
+                        <li><strong>Hash collisions</strong> - Poor hash function or high load factor degrades performance</li>
+                        <li><strong>Space overhead</strong> - Needs extra space for load factor and collision handling</li>
+                        <li><strong>No range queries</strong> - Can't efficiently get "all keys between X and Y"</li>
+                        <li><strong>Hash function quality matters</strong> - Bad hash = bad performance</li>
+                        <li><strong>Not cache-friendly</strong> - Random access pattern, unlike arrays</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="use-cases">
+                <h5>🎯 When to Use</h5>
+                <div class="use-case-item">
+                    <span class="use-case-title">Caching:</span> Memoization, DNS lookup, web browser cache - fast key-based retrieval
+                </div>
+                <div class="use-case-item">
+                    <span class="use-case-title">Counting/frequency:</span> Word count, character frequency, duplicate detection
+                </div>
+                <div class="use-case-item">
+                    <span class="use-case-title">Database indexing:</span> Quick lookups by primary key
+                </div>
+                <div class="use-case-item">
+                    <span class="use-case-title">Symbol tables:</span> Compilers, interpreters - variable name to value mapping
+                </div>
+                <div class="use-case-item">
+                    <span class="use-case-title">Set operations:</span> When you need unique collection with fast membership testing
+                </div>
+                <div class="use-case-item">
+                    <span class="use-case-title">Two-sum problems:</span> Classic interview problems where you need complement lookup
+                </div>
+            </div>
+
+            <div class="key-insight">
+                <h4>💡 Key Insight</h4>
+                <p>Hash tables are <strong>the speed hack of data structures</strong>. They trade memory and ordering for incredible speed. The magic is mathematical: a good hash function distributes keys uniformly, turning search from O(n) to O(1). But remember: <strong>average case ≠ worst case</strong>. With bad luck (or bad hash function), you can degrade to O(n). Still, for key-value lookups, nothing beats a well-implemented hash table.</p>
+            </div>
+        </div>
+
+        <!-- TREE -->
+        <div class="ds-card" id="tree">
+            <div class="ds-type"><span class="badge badge-hierarchical">Hierarchical</span><span class="badge badge-sequential">Non-Linear</span></div>
+            <h2>Tree (Binary Search Tree)</h2>
+            
+            <div class="core-concept">
+                <h3>🧬 Core DNA</h3>
+                <p><strong>A tree is a hierarchical structure with nodes connected by edges, where each node has at most one parent and zero or more children.</strong> BST adds ordering: left subtree < node < right subtree. It combines the search efficiency of binary search with dynamic insertion/deletion.</p>
+            </div>
+
+            <div class="mental-model">
+                <strong>Mental Model:</strong> A family tree or corporate org chart. One root (CEO), branches to children (managers), who have their own children (employees). In BST, add a rule: left child is always smaller, right child always larger. To find someone, you make decisions at each level, eliminating half the remaining possibilities.
+            </div>
+
+            <div class="visual-rep">
+                        8<br>
+                       / \<br>
+                      3   10<br>
+                     / \    \<br>
+                    1   6   14<br>
+                       / \   /<br>
+                      4   7 13<br>
+                <br>
+                Left < Parent < Right
+            </div>
+
+            <div class="section">
+                <h4>⏱️ Time & Space Complexity</h4>
+                <div class="complexity-grid">
+                    <div class="complexity-item">
+                        <div class="complexity-label">Search (balanced)</div>
+                        <div class="complexity-value">O(log n)</div>
+                    </div>
+                    <div class="complexity-item">
+                        <div class="complexity-label">Insert (balanced)</div>
+                        <div class="complexity-value">O(log n)</div>
+                    </div>
+                    <div class="complexity-item">
+                        <div class="complexity-label">Delete (balanced)</div>
+                        <div class="complexity-value">O(log n)</div>
+                    </div>
+                    <div class="complexity-item">
+                        <div class="complexity-label">Search (worst)</div>
+                        <div class="complexity-value">O(n)</div>
+                    </div>
+                    <div class="complexity-item">
+                        <div class="complexity-label">Space</div>
+                        <div class="complexity-value">O(n)</div>
+                    </div>
+                </div>
+                <p style="margin-top: 15px; color: var(--text-dim);">Worst case when tree becomes skewed (like a linked list)</p>
+            </div>
+
+            <div class="pros-cons">
+                <div class="pros">
+                    <h5>✓ Strengths</h5>
+                    <ul>
+                        <li><strong>Logarithmic operations</strong> - O(log n) search/insert/delete when balanced</li>
+                        <li><strong>Maintains order</strong> - In-order traversal gives sorted sequence</li>
+                        <li><strong>Dynamic size</strong> - Grows and shrinks without reallocation</li>
+                        <li><strong>Hierarchical relationships</strong> - Natural for representing nested structures</li>
+                        <li><strong>Range queries</strong> - Can efficiently find all elements in a range</li>
+                        <li><strong>No duplicates handling</strong> - Easy to enforce uniqueness or handle duplicates</li>
+                    </ul>
+                </div>
+                <div class="cons">
+                    <h5>✗ Limitations</h5>
+                    <ul>
+                        <li><strong>Can become unbalanced</strong> - Degenerates to O(n) if insertions are sorted</li>
+                        <li><strong>Complex deletion</strong> - Removing nodes (especially with 2 children) is tricky</li>
+                        <li><strong>No O(1) operations</strong> - Everything requires traversal</li>
+                        <li><strong>Extra space for pointers</strong> - Each node needs left, right, (optionally parent) pointers</li>
+                        <li><strong>Not cache-friendly</strong> - Nodes scattered in memory</li>
+                        <li><strong>Balancing complexity</strong> - Self-balancing trees (AVL, Red-Black) add implementation complexity</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="use-cases">
+                <h5>🎯 When to Use</h5>
+                <div class="use-case-item">
+                    <span class="use-case-title">Sorted data with insertions/deletions:</span> When you need to maintain sorted order and frequently modify
+                </div>
+                <div class="use-case-item">
+                    <span class="use-case-title">Range queries:</span> Database indices, finding all elements between X and Y
+                </div>
+                <div class="use-case-item">
+                    <span class="use-case-title">Priority scheduling:</span> When priorities change and you need to maintain order
+                </div>
+                <div class="use-case-item">
+                    <span class="use-case-title">File systems:</span> Directory structures, hierarchical data
+                </div>
+                <div class="use-case-item">
+                    <span class="use-case-title">Expression parsing:</span> Abstract syntax trees in compilers
+                </div>
+                <div class="use-case-item">
+                    <span class="use-case-title">Autocomplete/spell check:</span> Tries (special trees) for prefix matching
+                </div>
+            </div>
+
+            <div class="key-insight">
+                <h4>💡 Key Insight</h4>
+                <p>Trees are about <strong>divide and conquer through hierarchy</strong>. BST's power comes from binary search property: at each node, you eliminate half the tree. But here's the catch: <strong>balance is everything</strong>. A balanced BST is O(log n), a skewed BST is O(n) - same structure, vastly different performance. Real-world use usually demands self-balancing trees (AVL, Red-Black) to guarantee performance.</p>
+            </div>
+
+            <div class="comparison-table">
+                <h4>Tree Variants Comparison</h4>
+                <table>
+                    <tr>
+                        <th>Type</th>
+                        <th>Balance Guarantee</th>
+                        <th>Use Case</th>
+                    </tr>
+                    <tr>
+                        <td>BST (unbalanced)</td>
+                        <td>None - can degenerate</td>
+                        <td>Simple scenarios, teaching</td>
+                    </tr>
+                    <tr>
+                        <td>AVL Tree</td>
+                        <td>Strictly balanced (height diff ≤ 1)</td>
+                        <td>Read-heavy workloads</td>
+                    </tr>
+                    <tr>
+                        <td>Red-Black Tree</td>
+                        <td>Approximately balanced</td>
+                        <td>General purpose (used in C++ STL map)</td>
+                    </tr>
+                    <tr>
+                        <td>B-Tree</td>
+                        <td>Balanced multi-way tree</td>
+                        <td>Databases, file systems</td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+
+        <!-- HEAP -->
+        <div class="ds-card" id="heap">
+            <div class="ds-type"><span class="badge badge-hierarchical">Hierarchical</span><span class="badge badge-sequential">Priority-Based</span></div>
+            <h2>Heap (Binary Heap)</h2>
+            
+            <div class="core-concept">
+                <h3>🧬 Core DNA</h3>
+                <p><strong>A heap is a complete binary tree where each parent is greater/smaller than its children.</strong> Max-heap: parent > children. Min-heap: parent < children. Unlike BST, there's NO ordering between left and right children. The only guarantee: the root is always the max/min element.</p>
+            </div>
+
+            <div class="mental-model">
+                <strong>Mental Model:</strong> A company hierarchy where everyone knows their boss is more important than them, but siblings (same level) have no ranking among themselves. The CEO (root) is the most important person. To find the most important person: just look at the root. No complex searching needed.
+            </div>
+
+            <div class="visual-rep">
+                Max-Heap:<br>
+                        100<br>
+                       /   \<br>
+                     19    36<br>
+                    /  \   / \<br>
+                   17  3 25  1<br>
+                <br>
+                Array: [100,19,36,17,3,25,1]<br>
+                Parent > Children (no L/R order)
+            </div>
+
+            <div class="section">
+                <h4>⏱️ Time & Space Complexity</h4>
+                <div class="complexity-grid">
+                    <div class="complexity-item">
+                        <div class="complexity-label">Find Max/Min</div>
+                        <div class="complexity-value">O(1)</div>
+                    </div>
+                    <div class="complexity-item">
+                        <div class="complexity-label">Insert</div>
+                        <div class="complexity-value">O(log n)</div>
+                    </div>
+                    <div class="complexity-item">
+                        <div class="complexity-label">Extract Max/Min</div>
+                        <div class="complexity-value">O(log n)</div>
+                    </div>
+                    <div class="complexity-item">
+                        <div class="complexity-label">Heapify</div>
+                        <div class="complexity-value">O(n)</div>
+                    </div>
+                    <div class="complexity-item">
+                        <div class="complexity-label">Space</div>
+                        <div class="complexity-value">O(n)</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="pros-cons">
+                <div class="pros">
+                    <h5>✓ Strengths</h5>
+                    <ul>
+                        <li><strong>Instant max/min access</strong> - O(1) to peek at highest priority element</li>
+                        <li><strong>Efficient priority operations</strong> - O(log n) insert and extract</li>
+                        <li><strong>Array implementation</strong> - Can be stored in array without pointers (cache-friendly!)</li>
+                        <li><strong>In-place heapify</strong> - Can turn unsorted array into heap in O(n)</li>
+                        <li><strong>Space efficient</strong> - No wasted space, no pointer overhead</li>
+                    </ul>
+                </div>
+                <div class="cons">
+                    <h5>✗ Limitations</h5>
+                    <ul>
+                        <li><strong>No general search</strong> - Finding arbitrary element is O(n)</li>
+                        <li><strong>Only root is guaranteed</strong> - Can't efficiently access 2nd largest, 3rd largest, etc.</li>
+                        <li><strong>Not fully sorted</strong> - Elements are partially ordered, not fully sorted</li>
+                        <li><strong>Can't iterate in sorted order</strong> - Must extract elements to get sorted sequence</li>
+                        <li><strong>No range queries</strong> - Can't efficiently find "all elements between X and Y"</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="use-cases">
+                <h5>🎯 When to Use</h5>
+                <div class="use-case-item">
+                    <span class="use-case-title">Priority queues:</span> Task scheduling, CPU scheduling, event simulation
+                </div>
+                <div class="use-case-item">
+                    <span class="use-case-title">Heap sort:</span> Sorting algorithm with O(n log n) and O(1) space
+                </div>
+                <div class="use-case-item">
+                    <span class="use-case-title">Finding K largest/smallest:</span> Top K problems, median finding
+                </div>
+                <div class="use-case-item">
+                    <span class="use-case-title">Graph algorithms:</span> Dijkstra's shortest path, Prim's MST
+                </div>
+                <div class="use-case-item">
+                    <span class="use-case-title">Streaming data:</span> Maintaining top N items from a stream
+                </div>
+                <div class="use-case-item">
+                    <span class="use-case-title">Merge K sorted lists:</span> Efficiently merge multiple sorted sequences
+                </div>
+            </div>
+
+            <div class="key-insight">
+                <h4>💡 Key Insight</h4>
+                <p>Heaps solve one specific problem brilliantly: <strong>"Give me the highest/lowest priority item quickly, repeatedly."</strong> They're not for sorting (though heap sort exists), not for searching, not for maintaining full order. They're for priority access. The genius is storing a tree in an array: <code>parent = i, left_child = 2i+1, right_child = 2i+2</code>. This makes heaps both fast AND cache-friendly - a rare combination.</p>
+            </div>
+        </div>
+
+        <!-- GRAPH -->
+        <div class="ds-card" id="graph">
+            <div class="ds-type"><span class="badge badge-hierarchical">Non-Hierarchical</span><span class="badge badge-sequential">Non-Linear</span></div>
+            <h2>Graph</h2>
+            
+            <div class="core-concept">
+                <h3>🧬 Core DNA</h3>
+                <p><strong>A graph is a collection of vertices (nodes) connected by edges.</strong> Unlike trees, graphs can have cycles, multiple paths between nodes, disconnected components, and edges can have direction (directed) or not (undirected). It's the most general relationship structure - everything else is a special case of a graph.</p>
+            </div>
+
+            <div class="mental-model">
+                <strong>Mental Model:</strong> A social network or road map. People (vertices) are connected by friendships (edges). You can follow multiple paths to reach someone. There might be cycles (mutual friends who know each other). Some people might be unreachable (disconnected components). Relationships can be one-way (directed) or two-way (undirected).
+            </div>
+
+            <div class="visual-rep">
+                Undirected Graph:<br>
+                    A --- B<br>
+                    |     |<br>
+                    |     |<br>
+                    C --- D<br>
+                <br>
+                Directed Graph (Digraph):<br>
+                    A → B<br>
+                    ↓   ↓<br>
+                    C ← D
+            </div>
+
+            <div class="section">
+                <h4>⏱️ Time & Space Complexity</h4>
+                <div class="complexity-grid">
+                    <div class="complexity-item">
+                        <div class="complexity-label">Add Vertex</div>
+                        <div class="complexity-value">O(1)</div>
+                    </div>
+                    <div class="complexity-item">
+                        <div class="complexity-label">Add Edge</div>
+                        <div class="complexity-value">O(1)</div>
+                    </div>
+                    <div class="complexity-item">
+                        <div class="complexity-label">Remove Edge</div>
+                        <div class="complexity-value">O(V+E)</div>
+                    </div>
+                    <div class="complexity-item">
+                        <div class="complexity-label">BFS/DFS</div>
+                        <div class="complexity-value">O(V+E)</div>
+                    </div>
+                    <div class="complexity-item">
+                        <div class="complexity-label">Space (Adj List)</div>
+                        <div class="complexity-value">O(V+E)</div>
+                    </div>
+                    <div class="complexity-item">
+                        <div class="complexity-label">Space (Adj Matrix)</div>
+                        <div class="complexity-value">O(V²)</div>
+                    </div>
+                </div>
+                <p style="margin-top: 15px; color: var(--text-dim);">V = vertices, E = edges. Complexities vary by representation.</p>
+            </div>
+
+            <div class="pros-cons">
+                <div class="pros">
+                    <h5>✓ Strengths</h5>
+                    <ul>
+                        <li><strong>Models complex relationships</strong> - Can represent any relationship structure</li>
+                        <li><strong>Rich algorithms available</strong> - Shortest path, connectivity, flow, coloring, etc.</li>
+                        <li><strong>Flexible</strong> - Can be directed/undirected, weighted/unweighted, cyclic/acyclic</li>
+                        <li><strong>Natural for networks</strong> - Social networks, computer networks, transportation</li>
+                        <li><strong>Multiple representations</strong> - Choose adjacency list or matrix based on needs</li>
+                    </ul>
+                </div>
+                <div class="cons">
+                    <h5>✗ Limitations</h5>
+                    <ul>
+                        <li><strong>Complex to implement</strong> - More moving parts than other structures</li>
+                        <li><strong>Space-hungry</strong> - Adjacency matrix is O(V²) even for sparse graphs</li>
+                        <li><strong>Expensive operations</strong> - Many graph algorithms are O(V+E) or worse</li>
+                        <li><strong>No implicit ordering</strong> - Must use algorithms to find paths, order, etc.</li>
+                        <li><strong>Cycles complicate traversal</strong> - Need visited tracking to avoid infinite loops</li>
+                        <li><strong>Representation choice matters</strong> - List vs matrix affects performance significantly</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="use-cases">
+                <h5>🎯 When to Use</h5>
+                <div class="use-case-item">
+                    <span class="use-case-title">Social networks:</span> Friend connections, followers, recommendations
+                </div>
+                <div class="use-case-item">
+                    <span class="use-case-title">Maps and navigation:</span> Cities as vertices, roads as edges, GPS routing
+                </div>
+                <div class="use-case-item">
+                    <span class="use-case-title">Web crawling:</span> Pages as vertices, links as edges
+                </div>
+                <div class="use-case-item">
+                    <span class="use-case-title">Dependency resolution:</span> Package managers, build systems, task scheduling
+                </div>
+                <div class="use-case-item">
+                    <span class="use-case-title">Network routing:</span> Computer networks, internet routing protocols
+                </div>
+                <div class="use-case-item">
+                    <span class="use-case-title">Recommendation systems:</span> User-item relationships, collaborative filtering
+                </div>
+            </div>
+
+            <div class="key-insight">
+                <h4>💡 Key Insight</h4>
+                <p>Graphs are <strong>the ultimate generalization</strong>. Trees are graphs (connected, acyclic). Linked lists are graphs (linear path). But graphs can model arbitrary relationships. The tradeoff: <strong>power comes with complexity</strong>. Simple graph operations are expensive (traversal = O(V+E)). You don't use graphs for simple ordered lists - you use them when relationships are complex and irregular. Choose adjacency list for sparse graphs, matrix for dense graphs.</p>
+            </div>
+
+            <div class="comparison-table">
+                <h4>Graph Representations</h4>
+                <table>
+                    <tr>
+                        <th>Representation</th>
+                        <th>Space</th>
+                        <th>Check Edge</th>
+                        <th>Find Neighbors</th>
+                        <th>Best For</th>
+                    </tr>
+                    <tr>
+                        <td>Adjacency Matrix</td>
+                        <td>O(V²)</td>
+                        <td>O(1)</td>
+                        <td>O(V)</td>
+                        <td>Dense graphs, fast edge lookup</td>
+                    </tr>
+                    <tr>
+                        <td>Adjacency List</td>
+                        <td>O(V+E)</td>
+                        <td>O(degree)</td>
+                        <td>O(degree)</td>
+                        <td>Sparse graphs, memory efficiency</td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+
+        <!-- TRIE -->
+        <div class="ds-card" id="trie">
+            <div class="ds-type"><span class="badge badge-hierarchical">Hierarchical</span><span class="badge badge-sequential">String-Specialized</span></div>
+            <h2>Trie (Prefix Tree)</h2>
+            
+            <div class="core-concept">
+                <h3>🧬 Core DNA</h3>
+                <p><strong>A trie is a tree where each node represents a character, and paths from root to nodes form strings.</strong> It's optimized for prefix-based operations. Common prefixes are shared, so "cat", "car", "card" share the path "c-a". Perfect for autocomplete, spell check, and word games.</p>
+            </div>
+
+            <div class="mental-model">
+                <strong>Mental Model:</strong> A dictionary organized by letter structure. Start at the root, follow letters one by one. All words starting with "CAT" share the C-A-T path. To find all words starting with "CA", just traverse to "CA" and explore all branches below. Shared prefixes = shared paths = space savings.
+            </div>
+
+            <div class="visual-rep">
+                      root<br>
+                     /  |  \<br>
+                    c   d   t<br>
+                   /     \   \<br>
+                  a       o   o<br>
+                 / \       \<br>
+                t   r       g<br>
+               (cat)(car)  (dog,to)<br>
+                <br>
+                Stores: cat, car, dog, to
+            </div>
+
+            <div class="section">
+                <h4>⏱️ Time & Space Complexity</h4>
+                <div class="complexity-grid">
+                    <div class="complexity-item">
+                        <div class="complexity-label">Insert</div>
+                        <div class="complexity-value">O(m)</div>
+                    </div>
+                    <div class="complexity-item">
+                        <div class="complexity-label">Search</div>
+                        <div class="complexity-value">O(m)</div>
+                    </div>
+                    <div class="complexity-item">
+                        <div class="complexity-label">Prefix Search</div>
+                        <div class="complexity-value">O(m)</div>
+                    </div>
+                    <div class="complexity-item">
+                        <div class="complexity-label">Delete</div>
+                        <div class="complexity-value">O(m)</div>
+                    </div>
+                    <div class="complexity-item">
+                        <div class="complexity-label">Space</div>
+                        <div class="complexity-value">O(n×m)</div>
+                    </div>
+                </div>
+                <p style="margin-top: 15px; color: var(--text-dim);">m = length of string, n = number of strings</p>
+            </div>
+
+            <div class="pros-cons">
+                <div class="pros">
+                    <h5>✓ Strengths</h5>
+                    <ul>
+                        <li><strong>Blazing prefix search</strong> - Find all words with prefix "pre" instantly</li>
+                        <li><strong>Shared prefixes</strong> - Common prefixes stored once, saving space</li>
+                        <li><strong>Predictable performance</strong> - O(m) for string length m, independent of # words</li>
+                        <li><strong>No hash collisions</strong> - Deterministic, no randomness</li>
+                        <li><strong>Ordered traversal</strong> - Can get alphabetically sorted words</li>
+                        <li><strong>Wildcards and patterns</strong> - Can support regex-like matching</li>
+                    </ul>
+                </div>
+                <div class="cons">
+                    <h5>✗ Limitations</h5>
+                    <ul>
+                        <li><strong>Space intensive</strong> - Each node needs array/map of children (typically 26 for lowercase)</li>
+                        <li><strong>Pointer overhead</strong> - Many pointers, especially in sparse tries</li>
+                        <li><strong>Cache-unfriendly</strong> - Pointer-chasing through scattered nodes</li>
+                        <li><strong>Only for strings</strong> - Not general-purpose, string-specific structure</li>
+                        <li><strong>Implementation complexity</strong> - More complex than hash table for simple string storage</li>
+                        <li><strong>Not always faster</strong> - Hash table might be faster for exact lookups</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="use-cases">
+                <h5>🎯 When to Use</h5>
+                <div class="use-case-item">
+                    <span class="use-case-title">Autocomplete:</span> Search bars, text prediction, IDE code completion
+                </div>
+                <div class="use-case-item">
+                    <span class="use-case-title">Spell checker:</span> Finding similar words, suggesting corrections
+                </div>
+                <div class="use-case-item">
+                    <span class="use-case-title">IP routing:</span> Longest prefix matching in routers
+                </div>
+                <div class="use-case-item">
+                    <span class="use-case-title">Dictionary/word games:</span> Scrabble, crossword solvers, anagram finders
+                </div>
+                <div class="use-case-item">
+                    <span class="use-case-title">T9 predictive text:</span> Phone keyboards, text suggestions
+                </div>
+                <div class="use-case-item">
+                    <span class="use-case-title">String matching:</span> Pattern matching, substring search in sets of strings
+                </div>
+            </div>
+
+            <div class="key-insight">
+                <h4>💡 Key Insight</h4>
+                <p>Tries are <strong>specialized tools for prefix problems</strong>. If your problem involves "find all words starting with...", trie is your friend. The key insight: by organizing strings by character structure, you get prefix search for free. The cost: lots of nodes and pointers. Hash tables beat tries for exact match, but tries win decisively for prefix operations. It's a classic space-time tradeoff: spend space on structure to gain time on prefix queries.</p>
+            </div>
+        </div>
+
+        <!-- COMPARISON SECTION -->
+        <div class="ds-card">
+            <h2>🎯 Quick Selection Guide</h2>
+            
+            <div class="section">
+                <h4>Choose by Primary Operation</h4>
+                <div class="comparison-table">
+                    <table>
+                        <tr>
+                            <th>If you need...</th>
+                            <th>Use...</th>
+                            <th>Why?</th>
+                        </tr>
+                        <tr>
+                            <td>Random access by index</td>
+                            <td>Array</td>
+                            <td>O(1) access via arithmetic</td>
+                        </tr>
+                        <tr>
+                            <td>Frequent insertions/deletions</td>
+                            <td>Linked List</td>
+                            <td>O(1) with node reference</td>
+                        </tr>
+                        <tr>
+                            <td>Last-in, first-out</td>
+                            <td>Stack</td>
+                            <td>Natural for recursion/undo</td>
+                        </tr>
+                        <tr>
+                            <td>First-in, first-out</td>
+                            <td>Queue</td>
+                            <td>Fair ordering, BFS</td>
+                        </tr>
+                        <tr>
+                            <td>Fast key-value lookups</td>
+                            <td>Hash Table</td>
+                            <td>O(1) average case</td>
+                        </tr>
+                        <tr>
+                            <td>Sorted data + dynamic changes</td>
+                            <td>BST (balanced)</td>
+                            <td>O(log n) with order</td>
+                        </tr>
+                        <tr>
+                            <td>Always access highest/lowest</td>
+                            <td>Heap</td>
+                            <td>O(1) peek, O(log n) extract</td>
+                        </tr>
+                        <tr>
+                            <td>Complex relationships</td>
+                            <td>Graph</td>
+                            <td>Most general structure</td>
+                        </tr>
+                        <tr>
+                            <td>Prefix-based string ops</td>
+                            <td>Trie</td>
+                            <td>Optimized for prefixes</td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+
+            <div class="key-insight">
+                <h4>💡 Master Principle</h4>
+                <p><strong>No single data structure is "best"</strong> - each optimizes different operations at the expense of others. Arrays trade flexibility for speed. Linked lists trade speed for flexibility. Hash tables trade order for lookup speed. Trees balance multiple operations. Understanding these tradeoffs IS data structures mastery. The expert doesn't pick the "best" structure; they pick the structure whose strengths match the problem's requirements.</p>
+            </div>
+        </div>
+
+        <footer>
+            <p>Master data structures by understanding their DNA - the fundamental principle that drives all their properties.</p>
+            <p>Remember: <strong>Every advantage has a corresponding disadvantage.</strong> Choose wisely based on your problem's needs.</p>
+        </footer>
+    </div>
+</body>
+</html>
